@@ -7,10 +7,6 @@ from typing import (
 )
 
 
-def expand(func):
-    return Function(func)
-
-
 class Function:
 
     def __init__(self, func):
@@ -19,7 +15,7 @@ class Function:
     def __call__(self, *args, **kwargs):
         return self._func(*args, **kwargs)
 
-    def __getattr__(self, item):
+    def __getattr__(self, item: str) -> Callable:
         for frame_info in inspect.stack()[1:]:
             if f := self.__lookup_item(frame_info.frame, item):
                 return Function(lambda *args, **kwargs: self(f(*args, **kwargs)))
@@ -34,3 +30,7 @@ class Function:
             if f := getattr(frame, attr).get(item):
                 return f
         return None
+
+
+def expand(func: Callable) -> Function:
+    return Function(func)
