@@ -1,5 +1,5 @@
 from typing import Callable
-from com import *
+from functional import *
 
 
 @expand

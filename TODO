@@ -1,0 +1,5 @@
+TODO Copy type attributes of the wrapped function to
+TODO the ___call___. Make wrapping work so that
+TODO it is the same function (like functools.wrap).
+TODO Check if composed functions return type is the same as ours input type
+TODO Unpack returned dict, tuple before passing to our function after composition
