@@ -29,13 +29,11 @@ Got frame {frame}
 
 class Function:
     """
-
     TODO Copy type attributes of the wrapped function to
     TODO the ___call___. Make wrapping work so that
     TODO it is the same function (like functools.wrap).
     TODO Check if composed functions return type is the same as ours input type
     TODO Unpack returned dict, tuple before passing to our function after composition
-
     """
 
     def __init__(self, func):
@@ -47,10 +45,10 @@ class Function:
     def __getattr__(self, item):
         for frame_info in inspect.stack()[1:]:
             frame = frame_info.frame
-            if (f := self._lookup_item(frame, item)) is not None:
+            if (f := self.__lookup_item(frame, item)) is not None:
                 def composed(*args, **kwargs):
                     return self(f(*args, **kwargs))
-                return composed
+                return Function(composed)
             if frame_info.function == '<module>':
                 break
 
@@ -58,7 +56,7 @@ class Function:
             f"'{self.__class__.__name__}' object has no attribute '{item}'")
 
     @staticmethod
-    def _lookup_item(frame: FrameType, item: str) -> Optional[Callable]:
+    def __lookup_item(frame: FrameType, item: str) -> Optional[Callable]:
         if (f := frame.f_locals.get(item)) is not None:
             return f
         elif (f := frame.f_globals.get(item)) is not None:

@@ -25,6 +25,7 @@ def tests():
 
         assert foo.inner(1) == 4
         assert passing_call(1, bar) == 8
+        assert foo.bar.inner(1) == 10
     except BaseException as e:
         print(f"Tests failed with exception {type(e)}: {e}")
     else:
